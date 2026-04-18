@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Stalingrad 1943 - L'Hiver Rouge</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Inter:wght@400;600&display=swap');
+
+        :root {
+            --accent: #E5B13A;
+            --blood: #8B0000;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #050505;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+        }
+
+        /* IMAGE DE FOND SOMBRE ET FROIDE */
+        .background {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* J'ai mis une texture de ruines générique sombre. Tu pourras changer l'URL par une de tes images ! */
+            background: linear-gradient(rgba(5, 5, 5, 0.8), rgba(15, 15, 15, 0.95)), url('https://images.unsplash.com/photo-1485083269755-a7b559a4fe5e?q=80&w=1920') no-repeat center center/cover;
+            z-index: 0;
+            filter: grayscale(80%) contrast(120%);
+        }
+
+        /* EFFET DE BLIZZARD (NEIGE EN CSS) */
+        .snow, .snow:before, .snow:after {
+            position: absolute;
+            top: -600px; left: 0; bottom: 0; right: 0;
+            background-image: 
+                radial-gradient(4px 4px at 100px 50px, #fff, transparent), 
+                radial-gradient(6px 6px at 200px 150px, #fff, transparent), 
+                radial-gradient(3px 3px at 300px 250px, #fff, transparent), 
+                radial-gradient(4px 4px at 400px 350px, #fff, transparent), 
+                radial-gradient(6px 6px at 500px 100px, #fff, transparent), 
+                radial-gradient(3px 3px at 50px 200px, #fff, transparent), 
+                radial-gradient(4px 4px at 150px 300px, #fff, transparent), 
+                radial-gradient(6px 6px at 250px 400px, #fff, transparent), 
+                radial-gradient(3px 3px at 350px 500px, #fff, transparent);
+            background-size: 600px 600px;
+            animation: snow 3s linear infinite;
+            opacity: 0.3;
+            z-index: 1;
+        }
+        .snow:before { margin-left: -300px; opacity: 0.4; animation-duration: 5s; animation-direction: reverse; }
+        .snow:after { margin-left: -150px; opacity: 0.5; animation-duration: 4s; animation-direction: reverse; }
+
+        @keyframes snow {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(600px) translateX(50px); }
+        }
+
+        /* CONTENU CENTRAL */
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            text-align: center;
+            width: 80%;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 80px;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: 15px;
+            color: #fff;
+            text-transform: uppercase;
+            text-shadow: 0 5px 20px rgba(0,0,0,0.8);
+        }
+
+        .subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 8px;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+
+        /* TELERUPTEUR DE LORE (Machine à écrire) */
+        .lore-box {
+            margin-top: 60px;
+            background: rgba(0, 0, 0, 0.6);
+            border-left: 4px solid var(--blood);
+            padding: 15px 30px;
+            display: inline-block;
+            transition: opacity 0.5s ease;
+        }
+
+        .lore-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #ccc;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        /* BARRE DE CHARGEMENT GMOD */
+        .loading-wrapper {
+            position: absolute;
+            bottom: 60px;
+            left: 10%;
+            width: 80%;
+            z-index: 10;
+        }
+
+        .status-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            position: absolute;
+            top: 0; left: 0; height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.2s ease;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        /* CONTRÔLE AUDIO */
+        .audio-controls {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0,0,0,0.5);
+            padding: 10px 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .audio-controls label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100px;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider
